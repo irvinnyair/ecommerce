@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Product;
+use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Storage;
+
+class ProductController extends Controller
+{
+    
+    public function files(Product $product, Request $request){
+
+        //Validacion lado del backend
+
+        $request->validate([
+            'file' => 'required|image|max:2048'
+        ]);
+
+        $url = Storage::put('public/products', $request->file('file'));
+
+        $product->images()->create([
+            'url' => $url
+        ]);
+
+    }
+
+}
